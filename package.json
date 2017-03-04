@@ -10,7 +10,11 @@
     "react": "15.4.2",
     "react-native": "^0.42.0",
     "react-native-vector-icons": "^4.0.0",
-    "render-if": "^0.1.1"
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0",
+    "redux-logger": "^2.8.2",
+    "render-if": "^0.1.1",
+    "reselect": "^2.5.4"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",
