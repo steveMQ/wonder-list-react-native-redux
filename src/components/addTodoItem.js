@@ -43,7 +43,6 @@ export default class AddToDoItem extends Component {
             (text) => this.props.onNewTodoTextChange(text)
           }
         >
-          
         </TextInput> 
       </Row>
     );

@@ -19,6 +19,13 @@ import Checkbox from '@components/checkbox';
  */
 
 export default class Row extends Component {
+  static propType = {
+    // Allow the view properties for the Row
+    ...View.propTypes,
+
+    // custom props
+    control: React.PropTypes.node
+  };
 
   render() {
     
@@ -33,8 +40,6 @@ export default class Row extends Component {
       </View>
     );
   }
-
-
 }
 
 const styles = StyleSheet.create({

@@ -9,15 +9,33 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
 import ListScreen from '@screens/list';
+import AddTodoScreen from '@screens/addTodoScreen';
+import Routes from '@constants/routes';
 
 export default class TaskListReactApp extends Component {
+  
+  renderScene(route, navigator) {
+    switch (route.name) {
+      case Routes.List.name:
+        return <ListScreen navigator={navigator} />
+      case Routes.Add.name:
+        return <AddTodoScreen navigator={navigator} />
+    }
+  }
+  
   render() {
     return (
       <View style={styles.container}>
-        <ListScreen />
+        <Navigator
+          initialRoute={Routes.List}
+          renderScene={this.renderScene}
+        >
+
+        </Navigator>
       </View>
     );
   }

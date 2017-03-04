@@ -18,33 +18,103 @@ import ToDoItem from '@components/toDoItem';
 import AddToDoItem from '@components/addTodoItem';
 import Row from '@components/row';
 import Header from '@components/header';
+import Routes from '@constants/routes';
 
 export default class ListScreen extends Component {
   state = {
-    newTodoText: "steve",
+    // The text that is displayed in the "add todo" TextField
+    newTodoText: "",
+
+    // The list of todo items
     todos: [
       {title: 'hello there', completed: false},
       {title: 'howdy', completed: false}
     ]
   }
 
+  /**
+   * Handles a Todo list item checkbox being pressed.
+   * This will toggle the todo model's `completed` field.
+   * 
+   * @param {Todo} todo The todo to toggle.
+   */
   onTodoCheckboxPressed(todo) {
+    // (Read) Find the position of the todo in the list of todos.
+    // We will use this index to replace the old todo with the updated todo.
     var index = this.state.todos.indexOf(todo);
-    var updatedTodos = this.state.todos.slice();
-    var updatedTodoItem = {...todo, completed: !todo.completed};
 
+    // (Read) We create a copy of the todo list because we will be making changes to it.
+    var updatedTodos = this.state.todos.slice();
+
+    // (Read) We create a copy of the todo that will be toggled.
+    var updatedTodoItem = {...todo};
+
+
+    // (Modify) We modify our todo copy by toggling the `completed` value.
+    updatedTodoItem.completed = !todo.completed;
+
+    // (Modify) We modify the todo list copy by *replacing* the old todo (based on its index)
+    // with the updated todo copy.
     updatedTodos[index] = updatedTodoItem;
+
+
+    // (Write) We finally take our updated todo list, which contains the toggled Todo item,
+    // and update the state to use this newly updated list.
     this.setState({todos: updatedTodos});
   }
 
+  /**
+   * Handles when the user types the title of a new Todo in the text field.
+   * 
+   * @param {String} text 
+   */
   onNewTodoTextChange(text) {
+    // (Write) We directly replace the old text with the updated text in the state.
     this.setState({newTodoText: text})
   }
 
-  render() {
-    const todoOne = this.state.todos[0];
-    const todoTwo = this.state.todos[1];
+  /**
+   * Handles when the user taps on the right navigation element.
+   * If there is text in the New Todo Input Field, a new Todo is added.
+   * Otherwise we navigate to the Add Todo screen.
+   */
+  onRightButtonPressed() {
+    if(this.state.newTodoText){
+      // If the user has typed any text, create a new todo.
+      this.addNewTodo(this.state.newTodoText)
+    } 
+    else {
+      // Otherwise, we navigate to the Add Todo screen.
+      console.log('nothing here')
+    }
+  }
 
+  /**
+   * Creates a new Todo and adds it to the list of todos.
+   * 
+   * @param {String} title 
+   */
+  addNewTodo(title) {
+    // Create the new Todo
+    var todo = {
+      title: title,
+      completed: false
+    }
+
+    // (Read) Create a copy of the list of todos from the state
+    var updatedTodos = this.state.todos.slice();
+
+    // (Modify) Add the new todo to the copy of the todos.
+    updatedTodos.push(todo);
+
+    // (Write) Update the state with the updated todo list and clear the text field.
+    this.setState({
+      todos: updatedTodos,
+      newTodoText: ''
+    });
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <Image 
@@ -53,7 +123,10 @@ export default class ListScreen extends Component {
         >
         </Image>
 
-        <Header />
+        <Header
+          rightIconName="plus"
+          onRightPressed={ () => this.onRightButtonPressed() }
+        />
 
         {/* the area where the todo items will live */}
         <ScrollView>
@@ -64,16 +137,17 @@ export default class ListScreen extends Component {
                 (text) => this.onNewTodoTextChange(text)
               }
             />
-            <ToDoItem 
-              checked={todoOne.completed}
-              title={todoOne.title}
-              onCheckboxPressed={() => this.onTodoCheckboxPressed(todoOne)}
-            />
-            <ToDoItem 
-              checked={todoTwo.completed}
-              title={todoTwo.title}
-              onCheckboxPressed={() => this.onTodoCheckboxPressed(todoTwo)}
-            />
+
+            {this.state.todos.map((todo, index) => {
+              return (
+                <ToDoItem
+                  key={index}
+                  checked={todo.completed}
+                  title={todo.title}
+                  onCheckboxPressed={() => this.onTodoCheckboxPressed(todo)}
+                />
+              )
+            })}
           </View>
         </ScrollView>
         
