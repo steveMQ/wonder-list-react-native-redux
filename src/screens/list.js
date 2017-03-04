@@ -17,9 +17,34 @@ import Colors from '@constants/colors';
 import ToDoItem from '@components/toDoItem';
 import AddToDoItem from '@components/addTodoItem';
 import Row from '@components/row';
+import Header from '@components/header';
 
 export default class ListScreen extends Component {
+  state = {
+    newTodoText: "steve",
+    todos: [
+      {title: 'hello there', completed: false},
+      {title: 'howdy', completed: false}
+    ]
+  }
+
+  onTodoCheckboxPressed(todo) {
+    var index = this.state.todos.indexOf(todo);
+    var updatedTodos = this.state.todos.slice();
+    var updatedTodoItem = {...todo, completed: !todo.completed};
+
+    updatedTodos[index] = updatedTodoItem;
+    this.setState({todos: updatedTodos});
+  }
+
+  onNewTodoTextChange(text) {
+    this.setState({newTodoText: text})
+  }
+
   render() {
+    const todoOne = this.state.todos[0];
+    const todoTwo = this.state.todos[1];
+
     return (
       <View style={styles.container}>
         <Image 
@@ -28,16 +53,27 @@ export default class ListScreen extends Component {
         >
         </Image>
 
-        <View style={styles.header}>
-          <Text>Stuff</Text>
-        </View>
+        <Header />
 
         {/* the area where the todo items will live */}
         <ScrollView>
           <View style={styles.viewArea}>
-            <AddToDoItem />
-            <ToDoItem />
-          
+            <AddToDoItem 
+              valueOfTextField={this.state.newTodoText}
+              onNewTodoTextChange={
+                (text) => this.onNewTodoTextChange(text)
+              }
+            />
+            <ToDoItem 
+              checked={todoOne.completed}
+              title={todoOne.title}
+              onCheckboxPressed={() => this.onTodoCheckboxPressed(todoOne)}
+            />
+            <ToDoItem 
+              checked={todoTwo.completed}
+              title={todoTwo.title}
+              onCheckboxPressed={() => this.onTodoCheckboxPressed(todoTwo)}
+            />
           </View>
         </ScrollView>
         
@@ -64,12 +100,6 @@ const styles = StyleSheet.create({
     left:0,
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height
-  },
-  header: {
-    height:60, 
-    backgroundColor: Colors.Green.NORMAL,
-    paddingTop:30,
-    alignItems: 'center',
   },
   viewArea: {
     flex: 1,

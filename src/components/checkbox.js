@@ -11,15 +11,15 @@ import Colors from '@constants/colors';
 export default class Checkbox extends Component {
 
   render() {
+    const style = [styles.checkbox];
+    if (this.props.checked) {
+      style.push(styles.isChecked);
+    }
+
     return(
-      <TouchableHighlight
-        onPress={() => {
-          console.log('hello world!')
-        }}
-      >
-        <View style={styles.checkbox}/>
+      <TouchableHighlight onPress={this.props.onPress}>
+        <View style={style}/>
       </TouchableHighlight>
-      
     );
   }
 
@@ -32,5 +32,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.Gray.Border,
     borderRadius:4
+  },
+  isChecked: {
+    borderColor: 'lime'
   }
+
 });

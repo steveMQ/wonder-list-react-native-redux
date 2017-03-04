@@ -9,35 +9,24 @@ import {
 import Colors from '@constants/colors';
 import Row from '@components/row';
 import Checkbox from '@components/checkbox';
-/**
- * Goals
- * - Checkbox (boolean)
- * - Title (text)
- * - Press (function)
- * 
- * <TodoItem
- *  title="Hello World"
- *  completed={false}
- *  onPress={() => {...}}
- * />
- */
 
 export default class ToDoItem extends Component {
 
   render() {
     return (
       <Row 
-        control={<Checkbox/>}
+        control={
+          <Checkbox
+            checked={this.props.checked}
+            onPress={this.props.onCheckboxPressed}
+          />
+        }
         style={styles.row}
       >
-        <Text style={styles.toDoItemText}>This is a test!</Text>
+        <Text style={styles.toDoItemText}>{this.props.title}</Text>
       </Row>
     );
-    /*return(
-      <View style={styles.toDoItem}>
-        <Text style={styles.toDoItemText}>This is a test!</Text>
-      </View>    
-    );*/
+    
   }
 
 

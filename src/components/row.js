@@ -21,7 +21,7 @@ import Checkbox from '@components/checkbox';
 export default class Row extends Component {
 
   render() {
-    console.log(this)
+    
     return(
       <View style={[styles.row, this.props.style]}>
         <View style={styles.rowLeft}>
@@ -40,16 +40,19 @@ export default class Row extends Component {
 const styles = StyleSheet.create({
   
   row: {
-    padding:16,
-    marginBottom:10,
-    alignSelf: 'stretch',
+    height: 50,
+    paddingHorizontal: 16,
+    marginBottom: 10,
     borderRadius:5,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   rowLeft: {
-    width:40,
+    width:30,
+    justifyContent: 'center'
   },
   rowRight: {
     flex:1,
+    justifyContent: 'center'
   }
 });
